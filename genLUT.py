@@ -1,7 +1,10 @@
 import numpy as np
 import imageio
 
-# Copied from Cycles source
+
+out = "float_img.exr"
+
+# Values from Cycles source
 foo = '''{0.0014f, 0.0000f, 0.0065f}, {0.0022f, 0.0001f, 0.0105f}, {0.0042f, 0.0001f, 0.0201f},
     {0.0076f, 0.0002f, 0.0362f}, {0.0143f, 0.0004f, 0.0679f}, {0.0232f, 0.0006f, 0.1102f},
     {0.0435f, 0.0012f, 0.2074f}, {0.0776f, 0.0022f, 0.3713f}, {0.1344f, 0.0040f, 0.6456f},
@@ -59,11 +62,11 @@ print(arr)
 arr = arr.astype("float32")
 
 # Write to disk
-imageio.imwrite('float_img.tiff', arr)
+imageio.imwrite(out, arr)
 
 
-# Ensure export success
+# Verify Image
 # Read created exr from disk
-img = imageio.imread('float_img.exr')
+img = imageio.imread(out)
 
 assert img.dtype == np.float32
