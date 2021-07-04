@@ -1,3 +1,6 @@
+# Note Wavelength for Eevee has been merged in Blender 3.0+
+https://developer.blender.org/D11326
+
 # CIE-XYZ-colormatching
 
 **dependencies**: imagio,numpy
