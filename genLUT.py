@@ -2,10 +2,10 @@ import numpy as np
 import imageio
 
 
-out = "float_img.exr"
+out = "cie_xyz_lut.exr"
 
 # Values from Cycles source
-foo = '''{0.0014f, 0.0000f, 0.0065f}, {0.0022f, 0.0001f, 0.0105f}, {0.0042f, 0.0001f, 0.0201f},
+lut_values_str = '''{0.0014f, 0.0000f, 0.0065f}, {0.0022f, 0.0001f, 0.0105f}, {0.0042f, 0.0001f, 0.0201f},
     {0.0076f, 0.0002f, 0.0362f}, {0.0143f, 0.0004f, 0.0679f}, {0.0232f, 0.0006f, 0.1102f},
     {0.0435f, 0.0012f, 0.2074f}, {0.0776f, 0.0022f, 0.3713f}, {0.1344f, 0.0040f, 0.6456f},
     {0.2148f, 0.0073f, 1.0391f}, {0.2839f, 0.0116f, 1.3856f}, {0.3285f, 0.0168f, 1.6230f},
@@ -35,38 +35,14 @@ foo = '''{0.0014f, 0.0000f, 0.0065f}, {0.0022f, 0.0001f, 0.0105f}, {0.0042f, 0.0
     '''
 
 
-foo = foo.replace('{', '')
-foo = foo.replace('}', '')
-foo = foo.replace('f', '')
-foo = foo.replace(' ', '')
-foo = foo.split(',')
+lut_values_str = lut_values_str.replace('{', '').replace('}', '')
+lut_values_str = lut_values_str.replace('f', '').replace(' ', '').split(',')
 
+arr = np.array(lut_values_str, dtype=np.float32)
+arr.shape = 1, -1, 3
 
-def bar(x):
-    return float(x)
-
-
-foo = list(map(bar, foo))
-arr = np.array(foo, dtype=np.float32)
-arr = np.reshape(arr, (1,81,3))
-
-# Debug values before export
-print(arr)
-
-# Generate dummy random image with float values
-# For testing
-#arr = np.random.uniform(0.0, 1.0, size=(500,500,3))
-
-# freeimage lib only supports float32 not float64 arrays
-# Not needed but prefer to keep it
-arr = arr.astype("float32")
-
-# Write to disk
 imageio.imwrite(out, arr)
 
-
 # Verify Image
-# Read created exr from disk
 img = imageio.imread(out)
-
-assert img.dtype == np.float32
+print(img.astype(np.float32))
