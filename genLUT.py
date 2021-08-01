@@ -42,7 +42,3 @@ arr = np.array(lut_values_str, dtype=np.float32)
 arr.shape = 1, -1, 3
 
 imageio.imwrite(out, arr)
-
-# Verify Image
-img = imageio.imread(out)
-print(img.astype(np.float32))
